@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍽️ Retro Recipes - Recipe Browsing App
 
-## Getting Started
+A modern recipe browsing application built with Next.js, featuring a retro-styled UI and powered by TheMealDB API. Search for recipes, discover random meals, and enjoy a delightful cooking experience!
 
-First, run the development server:
+## ✨ Features
+
+- 🔍 **Recipe Search**: Search for recipes by name with real-time results
+- 🎲 **Random Recipes**: Discover new recipes with random suggestions
+- 📱 **Responsive Design**: Fully responsive retro-styled interface
+- 🎨 **Retro UI**: Beautiful vintage-inspired design with bold borders and vibrant colors
+- 💬 **Feedback System**: User feedback collection system
+- 🚨 **Error Handling**: Comprehensive error states and loading indicators
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed on your machine:
+
+- **Node.js** (version 18.0 or higher)
+- **npm**, **yarn**, **pnpm**, or **bun** package manager
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd recipe-browsing-app
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+3. **Run the development server:**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
+
+4. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+
+### Build for Production
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗️ Data-Fetching Approach
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### API Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **External API**: [TheMealDB API](https://www.themealdb.com/api.php)
+- **Endpoints Used**:
+  - Search recipes: `https://www.themealdb.com/api/json/v1/1/search.php?s={query}`
+  - Random recipes: `https://www.themealdb.com/api/json/v1/1/random.php`
 
-## Learn More
+### State Management & Data Fetching
 
-To learn more about Next.js, take a look at the following resources:
+- **TanStack Query (React Query)**: For server state management, caching, and data synchronization
+- **Custom Zustand Atoms**: For local state management with a custom atom system
+- **Query Keys**: Organized query invalidation and caching strategies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Key Data Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Search Flow**: User input → `presearch` state → `executeSearch()` → API call → results cached
+2. **Random Recipes**: Automatic fetch on component mount → cached for performance
+3. **State Sync**: Results stored in global atoms for cross-component access
 
-## Deploy on Vercel
+### Error Handling Strategy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Network Errors**: Graceful fallbacks and retry mechanisms
+- **Empty States**: User-friendly no-results messaging
+- **Loading States**: Spinner indicators during data fetching
+- **Partial Errors**: Non-blocking error banners for partial failures
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📁 Folder Structure
+
+```
+src/
+├── app/
+│   ├── (dashboard)/
+│   │   ├── home/
+│   │   │   ├── _components/
+│   │   │   │   ├── context.ts          # Global state atoms definition
+│   │   │   │   ├── hooks.ts            # Custom hooks for data fetching
+│   │   │   │   ├── header.tsx          # Search header component
+│   │   │   │   └── recipeList.tsx      # Main recipe display component
+│   │   │   ├── details/
+│   │   │   │   └── [id]/               # Dynamic recipe detail pages
+│   │   │   └── page.tsx                # Home page layout
+│   │   └── feedback/
+│   │       ├── _components/
+│   │       │   ├── context.ts          # Feedback state atoms
+│   │       │   ├── hooks.ts            # Feedback submission logic
+│   │       │   └── action.ts           # Server actions for feedback
+│   │       └── page.tsx                # Feedback page
+│   ├── globals.css                     # Global styles
+│   └── layout.tsx                      # Root layout with providers
+├── components/
+│   ├── common/
+│   │   └── queryProvider.tsx           # React Query provider setup
+│   └── retroui/                        # Custom UI component library
+│       ├── Button.tsx
+│       ├── Card.tsx
+│       ├── Badge.tsx
+│       ├── Input.tsx
+│       └── Sonner.tsx                  # Toast notifications
+├── lib/
+│   └── atom.ts                         # Custom Zustand-based atom system
+└── types/                              # TypeScript type definitions
+```
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand (custom atom system)
+- **Data Fetching**: TanStack Query (React Query)
+- **UI Components**: Custom RetroUI library
+- **Icons**: Lucide React
+- **Notifications**: Sonner (toast notifications)
+
+## 🙏 Acknowledgments
+
+- [TheMealDB](https://www.themealdb.com/) for providing the recipe API
+- [Lucide](https://lucide.dev/) for beautiful icons
+- [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
+- [TanStack Query](https://tanstack.com/query) for excellent data fetching

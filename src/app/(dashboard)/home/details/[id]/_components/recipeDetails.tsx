@@ -47,7 +47,7 @@ export default function RecipeDetails() {
         {data && !isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-20">
             {/* Image and Basic Info */}
-            <div className="grid-cols-1 md:col-span-2">
+            <div className="grid grid-cols-1 md:col-span-2">
               <Card className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-6 overflow-hidden">
                 <div className="relative">
                   <Image
@@ -119,7 +119,7 @@ export default function RecipeDetails() {
             </div>
 
             {/* Ingredients and Instructions */}
-            <div className="grid-cols-1 md:col-span-4 space-y-6">
+            <div className="grid grid-cols-1 md:col-span-4 space-y-6">
               {/* Ingredients */}
               <Card className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <div className="bg-yellow-300 border-b-4 border-black p-4">

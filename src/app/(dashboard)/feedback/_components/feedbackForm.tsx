@@ -27,9 +27,14 @@ export default function FeedbackForm() {
   const { mutate, details, setDetails, isPending } = useFeedback();
   useEffect(() => {
     if (recipeName) {
-      setDetails({ ...details, recipe: recipeName }), [recipeName];
+      setDetails((prevDetails) => {
+        if (prevDetails.recipe !== recipeName) {
+          return { ...prevDetails, recipe: recipeName };
+        }
+        return prevDetails;
+      });
     }
-  });
+  }, [recipeName, setDetails]);
 
   if (details.isSubmitted) {
     return (
