@@ -26,6 +26,14 @@ export default function RecipeDetails() {
     .filter((step) => step.trim())
     .filter((step) => !step.match(/^STEP\s+\d+/i));
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="container mx-auto p-4 md:p-6">

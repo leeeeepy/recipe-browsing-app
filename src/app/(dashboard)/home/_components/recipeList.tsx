@@ -1,6 +1,6 @@
 import { useSearch } from "./hooks";
 import { Button } from "@/components/retroui/Button";
-import { Shuffle, Star, Users } from "lucide-react";
+import { Loader2, Shuffle, Star, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/retroui/Card";
 import { Badge } from "@/components/retroui/Badge";
@@ -14,12 +14,25 @@ interface Meal {
 }
 
 export function RecipeList() {
-  const { search, recipesListData, randomRecipesListData, resetSearch } =
-    useSearch();
+  const {
+    search,
+    recipesListData,
+    randomRecipesListData,
+    resetSearch,
+    randomRecipesLoading,
+    searchRecipesLoading,
+  } = useSearch();
   console.log("recipesListData", recipesListData);
   const router = useRouter();
   const featuredMeal = randomRecipesListData?.[0];
   const otherMeals = recipesListData?.slice(0, 9);
+  if (randomRecipesLoading || searchRecipesLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <main className="container mx-auto p-4 md:p-6">

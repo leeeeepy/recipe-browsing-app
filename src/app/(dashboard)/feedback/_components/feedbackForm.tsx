@@ -1,7 +1,14 @@
 "use client";
 
 import type React from "react";
-import { ArrowLeft, Star, Send, ChefHat, MessageCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Star,
+  Send,
+  ChefHat,
+  MessageCircle,
+  Loader2,
+} from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/retroui/Button";
 import { Card } from "@/components/retroui/Card";
@@ -11,12 +18,18 @@ import { Textarea } from "@/components/retroui/Textarea";
 import { useFeedback } from "./hooks";
 import { cn } from "@/lib/utils";
 import { FeedbackSuccessFrom } from "./feedbackSuccessForm";
+import { useEffect } from "react";
 
 export default function FeedbackForm() {
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("recipe") || "";
   const router = useRouter();
-  const { mutate, details, setDetails } = useFeedback();
+  const { mutate, details, setDetails, isPending } = useFeedback();
+  useEffect(() => {
+    if (recipeName) {
+      setDetails({ ...details, recipe: recipeName }), [recipeName];
+    }
+  });
 
   if (details.isSubmitted) {
     return (
@@ -121,7 +134,7 @@ export default function FeedbackForm() {
                 <Input
                   id="recipe"
                   name="recipe"
-                  value={recipeName ?? details.recipe}
+                  value={details.recipe}
                   onChange={(e) =>
                     setDetails({ ...details, recipe: e.target.value })
                   }
@@ -199,8 +212,13 @@ export default function FeedbackForm() {
                   type="submit"
                   className=" bg-green-500 hover:bg-green-600 border-2 border-black font-bold uppercase text-lg h-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 transition-all"
                 >
-                  <Send className="h-5 w-5 mr-2" />
-                  SUBMIT FEEDBACK
+                  {isPending && <Loader2 className="h-5 w-5 animate-spin" />}
+                  {!isPending && (
+                    <div className="flex flex-row justify-center items-center">
+                      <Send className="h-5 w-5 mr-2" />
+                      SUBMIT FEEDBACK
+                    </div>
+                  )}
                 </Button>
               </div>
             </form>
