@@ -23,7 +23,6 @@ export function RecipeList() {
     searchRecipesLoading,
     randomRecipesError,
   } = useSearch();
-  console.log("recipesListData", recipesListData);
   const router = useRouter();
   const featuredMeal = randomRecipesListData?.[0];
   const otherMeals = recipesListData?.slice(0, 9);
@@ -51,7 +50,7 @@ export function RecipeList() {
             <div>
               SEARCH RESULTS FOR{" "}
               <span className="text-blue-600">
-                "{search.search.toUpperCase()}"
+                &quot{search.search.toUpperCase()}&quot
               </span>
               <span className="text-sm font-normal ml-2 text-gray-600">
                 ({recipesListData.length} recipe

@@ -62,7 +62,7 @@ export default function RecipeDetails() {
                   <h1 className="text-2xl md:text-3xl font-black uppercase mb-4 leading-tight">
                     {data?.strMeal}
                   </h1>
-                  <div className="flex flex-row gap-3 mb-6">
+                  <div className="flex flex-wrap gap-3 mb-6">
                     <Badge className="flex flex-row bg-black text-white text-xs border-2 border-black font-bold uppercase">
                       <Globe className="h-4 w-4 mr-2" />
                       {data?.strArea}

@@ -1,7 +1,6 @@
 import React from "react";
 
 export function Textarea({
-  type = "text",
   placeholder = "Enter text...",
   className = "",
   ...props

@@ -12,6 +12,7 @@ export async function submitFeedback({
     rating: details.rating,
     comment: details.comment,
   };
+  console.log(feedbackObj);
   const response = await fetch("https://dummyjson.com/c/d742-fb1a-4950-904e", {
     method: "POST",
     // body: JSON.stringify(feedbackObj),
