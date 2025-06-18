@@ -50,7 +50,7 @@ export function RecipeList() {
             <div>
               SEARCH RESULTS FOR{" "}
               <span className="text-blue-600">
-                &quot{search.search.toUpperCase()}&quot
+                &apos;{search.search.toUpperCase()}&apos;
               </span>
               <span className="text-sm font-normal ml-2 text-gray-600">
                 ({recipesListData.length} recipe
