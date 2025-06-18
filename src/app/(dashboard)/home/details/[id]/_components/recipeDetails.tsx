@@ -17,7 +17,7 @@ import { Badge } from "@/components/retroui/Badge";
 import { useRouter } from "next/navigation";
 
 export default function RecipeDetails() {
-  const { data, isLoading, ingredientsList } = useRecipeDetails();
+  const { data, error, isLoading, ingredientsList } = useRecipeDetails();
   const router = useRouter();
 
   const ingredients = ingredientsList();
@@ -30,6 +30,13 @@ export default function RecipeDetails() {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  } else if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <p className="text-2xl font-bold">Sorry,Please try again.</p>
+        <p className="text-lg font-bold">Error: {error.message}</p>
       </div>
     );
   }
@@ -166,11 +173,6 @@ export default function RecipeDetails() {
                 </div>
               </Card>
             </div>
-          </div>
-        )}
-        {isLoading && (
-          <div className="flex justify-center items-center h-screen">
-            <Loader2 className="h-8 w-8 animate-spin" />
           </div>
         )}
       </main>

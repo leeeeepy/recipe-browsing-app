@@ -21,6 +21,7 @@ export function RecipeList() {
     resetSearch,
     randomRecipesLoading,
     searchRecipesLoading,
+    randomRecipesError,
   } = useSearch();
   console.log("recipesListData", recipesListData);
   const router = useRouter();
@@ -30,6 +31,14 @@ export function RecipeList() {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
+  if (!search.search && randomRecipesError) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <p className="text-2xl font-bold">Sorry,Please try again.</p>
+        <p className="text-lg font-bold">Error: {randomRecipesError.message}</p>
       </div>
     );
   }
@@ -60,39 +69,61 @@ export function RecipeList() {
           </p>
         )}
       </div>
-      {recipesListData.length === 0 && (
+      {recipesListData.length === 0 && !searchRecipesLoading && (
         <div className="text-center py-20">
-          <div className="text-6xl mb-6">🔍</div>
+          <div className="text-6xl mb-6">{search.search ? "🔍" : "🍽️"}</div>
           <h3 className="text-2xl font-black uppercase mb-4">
-            {search.search ? "NO RECIPES FOUND" : "SOMETHING WENT WRONG"}
+            {search.search ? "NO RECIPES FOUND" : "NO RECIPES AVAILABLE"}
           </h3>
           <p className="text-lg font-bold mb-6 text-gray-600">
             {search.search
-              ? `We couldn't find any recipes matching "${search.search}". Try a different search term!`
-              : "We're having trouble loading recipes right now. Please try again."}
+              ? `We couldn't find any recipes matching "${search.search}". Try a different search term or check your spelling!`
+              : "We're having trouble loading recipes right now. This might be a temporary issue."}
           </p>
-          <div className="flex gap-4 justify-center">
-            <Button
-              variant="outline"
-              className="border-2 border-black font-bold uppercase"
-              onClick={() => {
-                resetSearch();
-                router.push("/");
-              }}
-            >
-              <Shuffle className="h-4 w-4 mr-2" />
-              TRY RANDOM RECIPES
-            </Button>
-            {search.search && (
-              <Button
-                className="bg-black text-white border-2 border-black font-bold uppercase"
-                onClick={() => {
-                  resetSearch();
-                  router.push("/");
-                }}
-              >
-                CLEAR SEARCH
-              </Button>
+          <div className="flex gap-4 justify-center flex-wrap">
+            {search.search ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="border-2 border-black font-bold uppercase"
+                  onClick={() => {
+                    resetSearch();
+                    router.push("/");
+                  }}
+                >
+                  <Shuffle className="h-4 w-4 mr-2" />
+                  TRY RANDOM RECIPES
+                </Button>
+                <Button
+                  className="bg-black text-white border-2 border-black font-bold uppercase"
+                  onClick={() => {
+                    resetSearch();
+                    router.push("/");
+                  }}
+                >
+                  CLEAR SEARCH
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  className="bg-black text-white border-2 border-black font-bold uppercase"
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  REFRESH PAGE
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-2 border-black font-bold uppercase"
+                  onClick={() => {
+                    router.push("/feedback");
+                  }}
+                >
+                  REPORT ISSUE
+                </Button>
+              </>
             )}
           </div>
         </div>
