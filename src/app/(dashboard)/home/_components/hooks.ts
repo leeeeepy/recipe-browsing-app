@@ -11,7 +11,6 @@ import {
 export function useSearch() {
   const [presearch, setPresearch] = useState("");
   const [search, setSearch] = useAtom(searchAtom);
-  const [randomRecipes, setRandomRecipes] = useState(false);
   const [randomRecipesData, setRandomRecipesData] = useAtom(randomRecipesAtom);
   const [recipesListData, setRecipesListData] = useAtom(RecipesListAtom);
 
@@ -30,13 +29,12 @@ export function useSearch() {
     queryKey: ["searchRecipes", search],
     queryFn: async (): Promise<MealDTO[]> => {
       const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${search.search}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("date", data);
       return data.meals || [];
     },
   });
@@ -97,7 +95,7 @@ export function useSearch() {
         })
       );
     }
-  }, []);
+  }, [randomRecipesListData]);
 
   return {
     presearch,
@@ -106,8 +104,6 @@ export function useSearch() {
     setSearch,
     executeSearch,
     resetSearch,
-    randomRecipes,
-    setRandomRecipes,
     recipesListData,
     setRecipesListData,
     randomRecipesData,

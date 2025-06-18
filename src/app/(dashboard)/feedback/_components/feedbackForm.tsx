@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { ArrowLeft, Star, Send, ChefHat, MessageCircle } from "lucide-react";
-import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/retroui/Button";
 import { Card } from "@/components/retroui/Card";
@@ -11,88 +10,31 @@ import { Input } from "@/components/retroui/Input";
 import { Textarea } from "@/components/retroui/Textarea";
 import { useFeedback } from "./hooks";
 import { cn } from "@/lib/utils";
+import { FeedbackSuccessFrom } from "./feedbackSuccessForm";
 
 export default function FeedbackForm() {
   const searchParams = useSearchParams();
   const recipeName = searchParams.get("recipe") || "";
   const router = useRouter();
-  const { mutate, details, setDetails, resetDetails } = useFeedback();
+  const { mutate, details, setDetails } = useFeedback();
 
   if (details.isSubmitted) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <header className="border-b-4 border-black bg-yellow-300 p-4 md:p-6">
-          <div className="container mx-auto">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                className="border-2 border-black font-bold uppercase"
-                onClick={() => router.push("/")}
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                HOME
-              </Button>
-              <div className="flex items-center gap-2">
-                <MessageCircle className="h-5 w-5" />
-                <h1 className="text-lg md:text-2xl font-black uppercase tracking-tight">
-                  FEEDBACK SUBMITTED
-                </h1>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main className="container mx-auto p-4 md:p-6">
-          <div className="max-w-2xl mx-auto text-center py-12 md:py-20">
-            <Card className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8">
-              <div className="text-6xl md:text-8xl mb-6">🎉</div>
-              <h2 className="text-3xl md:text-4xl font-black uppercase mb-4">
-                THANK YOU!
-              </h2>
-              <p className="text-lg md:text-xl font-bold mb-6 text-gray-700">
-                Your feedback has been submitted successfully. We appreciate you
-                taking the time to share your experience!
-              </p>
-              <div className="bg-yellow-300 border-2 border-black p-4 mb-6">
-                <p className="font-bold uppercase">
-                  Your feedback helps other food lovers discover great recipes!
-                </p>
-              </div>
-              <div className="flex flex-col md:flex-row gap-4 justify-center">
-                <Button
-                  className="bg-black text-white border-2 border-black font-bold uppercase text-lg px-6 py-3"
-                  onClick={() => router.push("/")}
-                >
-                  DISCOVER MORE RECIPES
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-2 border-black font-bold uppercase text-lg px-6 py-3"
-                  onClick={() => {
-                    resetDetails();
-                    router.push("/feedback");
-                  }}
-                >
-                  LEAVE ANOTHER REVIEW
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </main>
+        <FeedbackSuccessFrom />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="border-b-4 border-black bg-yellow-300 p-4 md:p-6">
         <div className="container mx-auto">
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
               className="border-2 border-black font-bold uppercase"
-              onClick={() => router.push("/")}
+              onClick={() => router.back()}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               <span className="hidden md:inline">BACK</span>
@@ -106,7 +48,6 @@ export default function FeedbackForm() {
           </div>
         </div>
       </header>
-
       <main className="flex flex-col justify-center p-4 md:p-6 ">
         <div className="max-w-2xl mx-auto">
           <div className="mb-6 md:mb-8">
@@ -119,7 +60,6 @@ export default function FeedbackForm() {
               feedback is valuable to our community.
             </p>
           </div>
-
           <Card className="w-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="bg-yellow-300 border-b-4 border-black p-4">
               <div className="flex items-center gap-2">
@@ -127,7 +67,6 @@ export default function FeedbackForm() {
                 <h3 className="text-lg font-black uppercase">FEEDBACK FORM</h3>
               </div>
             </div>
-
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -135,7 +74,6 @@ export default function FeedbackForm() {
               }}
               className="p-4 md:p-6 space-y-6"
             >
-              {/* Name */}
               <div>
                 <Label
                   htmlFor="name"
@@ -154,8 +92,6 @@ export default function FeedbackForm() {
                   placeholder="Enter your name"
                 />
               </div>
-
-              {/* Email */}
               <div>
                 <Label
                   htmlFor="email"
@@ -175,8 +111,6 @@ export default function FeedbackForm() {
                   placeholder="your@email.com"
                 />
               </div>
-
-              {/* Recipe */}
               <div>
                 <Label
                   htmlFor="recipe"
@@ -195,8 +129,6 @@ export default function FeedbackForm() {
                   placeholder="Which recipe are you reviewing?"
                 />
               </div>
-
-              {/* Rating */}
               <div>
                 <Label className="text-base md:text-lg font-black uppercase mb-2 block">
                   RATING ({details.rating}/5 STARS)

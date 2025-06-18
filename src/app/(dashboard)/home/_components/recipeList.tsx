@@ -16,16 +16,17 @@ interface Meal {
 export function RecipeList() {
   const { search, recipesListData, randomRecipesListData, resetSearch } =
     useSearch();
+  console.log("recipesListData", recipesListData);
   const router = useRouter();
   const featuredMeal = randomRecipesListData?.[0];
-  const otherMeals = recipesListData?.slice(1, 10);
+  const otherMeals = recipesListData?.slice(0, 9);
 
   return (
     <main className="container mx-auto p-4 md:p-6">
       <div className="mb-6 md:mb-8">
         <h2 className="text-2xl md:text-3xl font-black uppercase mb-2">
           {search.search && (
-            <>
+            <div>
               SEARCH RESULTS FOR{" "}
               <span className="text-blue-600">
                 "{search.search.toUpperCase()}"
@@ -34,7 +35,7 @@ export function RecipeList() {
                 ({recipesListData.length} recipe
                 {recipesListData.length !== 1 ? "s" : ""} found)
               </span>
-            </>
+            </div>
           )}
           {!search.search && "DISCOVER AMAZING RECIPES"}
         </h2>
@@ -54,7 +55,7 @@ export function RecipeList() {
           </h3>
           <p className="text-lg font-bold mb-6 text-gray-600">
             {search.search
-              ? `We couldn't find any recipes matching "${search}". Try a different search term!`
+              ? `We couldn't find any recipes matching "${search.search}". Try a different search term!`
               : "We're having trouble loading recipes right now. Please try again."}
           </p>
           <div className="flex gap-4 justify-center">
@@ -62,13 +63,14 @@ export function RecipeList() {
               variant="outline"
               className="border-2 border-black font-bold uppercase"
               onClick={() => {
+                resetSearch();
                 router.push("/");
               }}
             >
               <Shuffle className="h-4 w-4 mr-2" />
               TRY RANDOM RECIPES
             </Button>
-            {search && (
+            {search.search && (
               <Button
                 className="bg-black text-white border-2 border-black font-bold uppercase"
                 onClick={() => {
@@ -82,13 +84,12 @@ export function RecipeList() {
           </div>
         </div>
       )}
-      {featuredMeal && (
+      {!search.search && featuredMeal && (
         <div>
           <div className="mb-6">
             <h3 className="text-2xl font-black uppercase mb-2 flex items-center gap-2">
               <Star className="h-6 w-6 text-yellow-500" />
-              {search.search && "TOP RESULT"}
-              {!search.search && "FEATURED RECIPE OF THE DAY"}
+              {search.search ? "TOP RESULT" : "FEATURED RECIPE OF THE DAY"}
             </h3>
             <div className="w-20 h-2 bg-yellow-500"></div>
           </div>
@@ -103,8 +104,9 @@ export function RecipeList() {
                 <div className="flex items-center gap-2">
                   <Star className="h-5 w-5" />
                   <span className="font-black uppercase">
-                    {search.search && "BEST MATCH FOR YOUR SEARCH"}
-                    {!search.search && "TODAY'S SPECIAL"}
+                    {search.search
+                      ? "BEST MATCH FOR YOUR SEARCH"
+                      : "TODAY'S SPECIAL"}
                   </span>
                 </div>
                 <div className="bg-red-500 text-white px-3 py-1 border-2 border-black font-black uppercase text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -154,12 +156,14 @@ export function RecipeList() {
       {otherMeals?.length && otherMeals?.length > 0 && (
         <div className="flex flex-col mt-6">
           <div className="mb-6">
-            <h3 className="text-2xl font-black uppercase mb-2">
-              {search.search &&
-                `MORE RESULTS FOR "${search.search.toUpperCase()}"`}
-              {!search.search && "MORE DELICIOUS RECIPES"}
-            </h3>
-            <div className="w-20 h-2 bg-black"></div>
+            {!search.search && (
+              <div>
+                <h3 className="text-2xl font-black uppercase mb-2">
+                  MORE DELICIOUS RECIPES
+                </h3>
+                <div className="w-20 h-2 bg-black"></div>
+              </div>
+            )}
             <p className="mt-2 font-bold text-gray-600">
               {search.search &&
                 `Found ${otherMeals?.length} more recipe${
@@ -182,7 +186,7 @@ export function RecipeList() {
                 <div className="relative overflow-hidden">
                   <picture>
                     <img
-                      src={meal.strMealThumb || "/placeholder.svg"}
+                      src={meal.strMealThumb ?? "/placeholder.svg"}
                       alt={meal.strMeal}
                       width={300}
                       height={300}

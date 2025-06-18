@@ -1,12 +1,10 @@
-import { ChefHat, Search, Shuffle } from "lucide-react";
+import { ChefHat, Search, BrushCleaning } from "lucide-react";
 import { Button } from "@/components/retroui/Button";
 import { Input } from "@/components/retroui/Input";
 import { useSearch } from "./hooks";
-import { useRouter } from "next/navigation";
 
 export function Header() {
-  const { presearch, setPresearch, executeSearch } = useSearch();
-  const router = useRouter();
+  const { presearch, setPresearch, executeSearch, resetSearch } = useSearch();
 
   return (
     <div>
@@ -50,13 +48,13 @@ export function Header() {
               <Button
                 type="button"
                 onClick={() => {
-                  router.push("/");
+                  resetSearch();
                 }}
                 variant="outline"
                 className="border-2 border-black font-bold uppercase h-12 px-3 md:px-4"
                 title="Get random recipes"
               >
-                <Shuffle className="h-5 w-5" />
+                <BrushCleaning className="h-5 w-5" />
               </Button>
             </form>
           </div>
